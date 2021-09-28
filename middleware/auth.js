@@ -6,11 +6,20 @@ const SECRET = process.env.SECRET;
 
 const auth = async (req, res, next) => {
     try {
-        const token = req.header;
-        console.log(token);
+        const token = req.cookies['access_token'].replace('Bearer ', '');
+        const decoded = jwt.verify(token, SECRET);
+        const user = await User.findOne({ _id: decoded._id, 'tokens.token': token });
+
+        if (!user) {
+            throw new Error();
+        }
+
+        req.user = user;
+        req.token = token;
+
         next();
     } catch (e) {
-        res.send('Что-то пошло не так');
+        res.redirect('/authorization-request');
     }
 };
 

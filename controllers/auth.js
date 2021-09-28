@@ -7,14 +7,28 @@ exports.getLogin = (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
-    console.log(req.body.email);
-    console.log(req.body.password);
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
-        await user.generateAuthToken();
+        const token = await user.generateAuthToken();
+        await res.cookie('access_token', 'Bearer ' + token, { httpOnly: true });
         await res.redirect('/');
-        //const token = await user.generateAuthToken();
     } catch (e) {
-        res.status(400).send('Что-то пошло не так');
+        res.status(400).send('Что-то пошло не так!');
     }
+};
+
+exports.getAuthorizationRequest = (req, res, next) => {
+    res.render('auth/authorizationRequest', {
+        docTitle: 'Пожалуйста, авторизуйтесь'
+    });
+};
+
+exports.postLogout = async (req, res, next) => {
+  try {
+      req.user.tokens = [];
+      await req.user.save();
+      await res.redirect('/login');
+  }  catch (e) {
+      res.status(500).send('Что-то сломалось!');
+  }
 };

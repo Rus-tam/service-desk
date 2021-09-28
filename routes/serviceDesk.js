@@ -7,6 +7,6 @@ const serviceDeskController = require('../controllers/serviceDesk');
 
 router.get('/', auth, serviceDeskController.getIndexPage);
 
-router.get('/about', serviceDeskController.getAboutPage);
+router.get('/about', auth, serviceDeskController.getAboutPage);
 
 module.exports = router;
