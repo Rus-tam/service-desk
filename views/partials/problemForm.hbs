@@ -1,0 +1,27 @@
+<div>
+    <form action="/new-software-problem" method="post">
+        <div class="form-control">
+            <label for="description">Краткое описание проблемы</label>
+            <textarea name="description" id="description" rows="20"></textarea>
+        </div>
+
+        <div class="form-control">
+            <p>Приоритет решения задачи</p>
+
+            <label for="highPriority">Высокий</label>
+            <input type="radio" name="priority" id="highPriority" value="high">
+
+            <label for="mediumPriority">Средний</label>
+            <input type="radio" name="priority" id="mediumPriority" value="medium">
+
+            <label for="lowPriority">Низкий</label>
+            <input type="radio" name="priority" id="lowPriority" value="low">
+
+            <input type="hidden" value="{{destination}}" name="destination">
+
+            <div>
+                <button type="submit">Отправить заявку</button>
+            </div>
+        </div>
+    </form>
+</div>

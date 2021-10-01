@@ -1,35 +1,30 @@
 const User = require('../models/user')
 
 exports.getNewUserPage = (req, res, next) => {
-    res.render('admin/newUser', {
-        docTitle: 'Новый пользователь'
-    });
+    if (req.isAdmin) {
+        res.render('admin/newUser', {
+            docTitle: 'Новый пользователь',
+            isAdmin: req.isAdmin,
+            user: req.user
+        });
+    } else {
+        res.redirect('/');
+    }
 };
 
-exports.postNewUser = async (req, res, next) => {
-    const name = req.body.name;
-    const surname = req.body.surname;
-    const patronymic = req.body.patronymic;
-    const department = req.body.department;
-    const location = req.body.location;
-    const position = req.body.position;
-    const email = req.body.email;
-    const phone = req.body.phone;
-    const password = req.body.password;
-    const role = req.body.role;
-
+exports.postNewUser = async (req, res) => {
     try {
         const user = new User({
-            name,
-            surname,
-            patronymic,
-            department,
-            location,
-            position,
-            email,
-            phone,
-            password,
-            role
+            name: req.body.name,
+            surname: req.body.surname,
+            patronymic: req.body.patronymic,
+            department: req.body.department,
+            location: req.body.location,
+            position: req.body.position,
+            email: req.body.email,
+            phone: req.body.phone,
+            password: req.body.password,
+            role: req.body.role
         });
         await user.save();
         await user.generateAuthToken();

@@ -8,20 +8,22 @@ const expressHbs = require('express-handlebars');
 const adminRoutes = require('./routes/admin');
 const serviceDeskRoutes = require('./routes/serviceDesk');
 const authRoutes = require('./routes/auth');
+const hbs = require('express-handlebars');
 
 let app = express();
 
-//Define [ath for Express config
-const partialPath = path.join(__dirname, './views/layouts/');
+//Define Path for Express config
 
 // view engine setup
 app.engine('hbs', expressHbs({
   extname: 'hbs',
   layoutsDir: 'views/layouts/',
-  defaultLayout: 'mainLayout'
+  defaultLayout: 'mainLayout',
+  partialsDir: 'views/partials'
 }))
 app.set('view engine', 'hbs');
 app.set('views', 'views');
+
 
 
 app.use(logger('dev'));

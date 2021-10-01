@@ -17,6 +17,8 @@ const auth = async (req, res, next) => {
         req.user = user;
         req.token = token;
 
+        req.user.role === 'Admin' ? req.isAdmin = true : req.isAdmin = false;
+
         next();
     } catch (e) {
         res.redirect('/authorization-request');

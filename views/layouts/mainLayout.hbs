@@ -10,12 +10,18 @@
         <body>
             <header>
                 <a href="/">Регистрация заявок</a>
-                <a href="/new-user">Новый пользователь</a>
+                {{#if isAdmin}}
+                    <a href="/new-user">Новый пользователь</a>
+                {{/if}}
+                <a href="/profile">Профиль</a>
                 <a href="/about">Инфо</a>
-                <a href="/login">Вход</a>
-                <form action="/logout" method="post">
-                    <button type="submit">Logout</button>
-                </form>
+                {{#if user}}
+                    <form action="/logout" method="post">
+                        <button type="submit">Logout</button>
+                    </form>
+                {{else}}
+                    <a href="/login">Вход</a>
+                {{/if}}
             </header>
                 {{{ body }}}
         </body>
