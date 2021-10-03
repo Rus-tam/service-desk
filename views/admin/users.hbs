@@ -1,0 +1,14 @@
+<main>
+    {{#each users}}
+        <article>
+            <p><strong>Фамилия: </strong>{{this.surname}}</p>
+            <p><strong>Имя: </strong>{{this.name}}</p>
+            <p><strong>Отчество: </strong>{{this.patronymic}}</p>
+            <p><strong>Департамент: </strong>{{this.department}}</p>
+            <p><strong>Должность: </strong>{{this.position}}</p>
+            <div>
+                <a href="user/:{{this._id}}">Редактировать профиль</a>
+            </div>
+        </article>
+    {{/each}}
+</main>

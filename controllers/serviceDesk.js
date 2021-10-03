@@ -5,7 +5,8 @@ const workerFinder = require('../utils/workerFinder');
 exports.getIndexPage = (req, res, next) => {
     res.render('serviceDesk/index', {
         docTitle: 'Регистрация заявок',
-        isAdmin: req.isAdmin
+        isAdmin: req.isAdmin,
+        user: req.user
     });
 };
 
@@ -18,11 +19,18 @@ exports.getAboutPage = (req, res, next) => {
 };
 
 exports.getProfile = async (req, res) => {
-    await res.render('serviceDesk/profile', {
-        docTitle: 'Профиль пользователя',
-        isAdmin: req.isAdmin,
-        user: req.user.toJSON()
-    });
+    try {
+        const tasks = await Task.find({ $and: [{ problemSolverId: req.user._id.toString() }, { isSolved: false }]}).lean();
+        await res.render('serviceDesk/profile', {
+            docTitle: 'Профиль пользователя',
+            isAdmin: req.isAdmin,
+            user: req.user.toJSON(),
+            tasks: tasks
+        });
+    } catch (e) {
+        console.log(e);
+        res.send('Что-то сломалось');
+    };
 };
 
 exports.getServiceCatalog = (req, res) => {
@@ -32,16 +40,39 @@ exports.getServiceCatalog = (req, res) => {
     });
 };
 
-exports.getProblemDescriptionSoftware = async (req, res) => {
-    await workerFinder('Программист')
+exports.getProblemDescriptionSoftware = (req, res) => {
     res.render('serviceDesk/problemDescription', {
         docTitle: 'Заполнение формы',
         isAdmin: req.isAdmin,
-        destination: ['Программист']
+        destination: ['OfficeGod']
     });
 };
 
-exports.postProblemDescriptionSoftware = async (req, res) => {
+exports.getProblemDescriptionOfficeEquipment = (req, res) => {
+  res.render('serviceDesk/problemDescription', {
+      docTitle: 'Заполнение формы',
+      isAdmin: req.isAdmin,
+      destination: ['AnyKey']
+  });
+};
+
+exports.getProblemDescriptionFurniture = (req, res) => {
+  res.render('serviceDesk/problemDescription', {
+     docTitle: 'Заполнение формы',
+     isAdmin: req.isAdmin,
+     destination: ['HandyMan']
+  });
+};
+
+exports.getProblemDescriptionAdmin = (req, res) => {
+    res.render('serviceDesk/problemDescription', {
+        docTitle: 'Заполнение формы',
+        isAdmin: req.isAdmin,
+        destination: ['Admin']
+    });
+};
+
+exports.postProblemDescription = async (req, res) => {
   try {
       const task = new Task({
          description: req.body.description,
@@ -57,8 +88,6 @@ exports.postProblemDescriptionSoftware = async (req, res) => {
           solvedAt: null
       });
 
-      //await task.save();
-
       const worker = await workerFinder(task.destination.toString());
       task.problemSolverName = await (worker.surname + ' ' + worker.name + ' ' + worker.patronymic);
       task.problemSolverId = worker._id.toString();
@@ -70,4 +99,56 @@ exports.postProblemDescriptionSoftware = async (req, res) => {
       res.send('Что-то сломалось');
       console.log(e)
   }
+};
+
+exports.getTaskDetails = async (req, res) => {
+    try {
+        const taskId = req.params.taskId.replace(':', '');
+        const task = await Task.findOne({ _id: taskId });
+
+        res.render('serviceDesk/taskDetails', {
+            docTitle: 'Детали задачи',
+            isAdmin: req.isAdmin,
+            task: task.toJSON(),
+            user: req.user,
+            isBusy: req.user.isBusy
+        })
+    } catch (e) {
+        console.log(e);
+        res.send('Что-то сломалось!');
+    }
+};
+
+exports.postSetAcceptedTime = async (req, res) => {
+    try {
+        const taskId = req.params.taskId.replace(':', '');
+        const task = await Task.findOne({ _id: taskId });
+        task.acceptedAt = new Date;
+        await task.save();
+
+        req.user.isBusy = true;
+        await req.user.save();
+
+        await res.redirect('/profile');
+    } catch (e) {
+        console.log(e);
+        res.send('Что-то пошло не так!');
+    };
+};
+
+exports.postSetSolvedTime = async (req, res) => {
+    try {
+        const taskId = req.params.taskId.replace(':', '');
+        const task = await Task.findOne({ _id: taskId });
+        task.solvedAt = new Date;
+        task.isSolved = true;
+        await task.save();
+        req.user.isBusy = false;
+        await req.user.save();
+
+        await res.redirect('/profile');
+    } catch (e) {
+        console.log(e);
+        res.send('Что-то пошло не так!');
+    }
 };

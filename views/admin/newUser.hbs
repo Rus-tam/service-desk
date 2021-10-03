@@ -1,43 +1,43 @@
 <main>
-    <form action="/new-user" method="POST">
+    <form action="{{#if isEditingMode}}/update-user{{else}}/new-user{{/if}}" method="POST">
         <div class="form-control">
             <label for="surname">Фамилия</label>
-            <input type="text" name="surname" id="surname">
+            <input type="text" name="surname" id="surname" value="{{# if isEditingMode}}{{user.surname}}{{/if}}">
         </div>
 
         <div class="form-control">
             <label for="name">Имя</label>
-            <input type="text" name="name" id="name">
+            <input type="text" name="name" id="name" value="{{# if isEditingMode}}{{user.name}}{{/if}}">
         </div>
 
         <div class="form-control">
             <label for="patronymic">Отчество</label>
-            <input type="text" name="patronymic" id="patronymic">
+            <input type="text" name="patronymic" id="patronymic" value="{{# if isEditingMode}}{{user.patronymic}}{{/if}}">
         </div>
 
         <div class="form-control">
             <label for="department">Департамент</label>
-            <input type="text" name="department" id="department">
+            <input type="text" name="department" id="department" value="{{# if isEditingMode}}{{user.department}}{{/if}}">
         </div>
 
         <div class="form-control">
             <label for="location">Местоположение</label>
-            <input type="text" name="location" id="location">
+            <input type="text" name="location" id="location" value="{{# if isEditingMode}}{{user.location}}{{/if}}">
         </div>
 
         <div class="form-control">
             <label for="position">Должность</label>
-            <input type="text" name="position" id="position">
+            <input type="text" name="position" id="position" value="{{# if isEditingMode}}{{user.position}}{{/if}}">
         </div>
 
         <div class="form-control">
             <label for="email">Емейл</label>
-            <input type="email" name="email" id="email">
+            <input type="email" name="email" id="email" value="{{# if isEditingMode}}{{user.email}}{{/if}}">
         </div>
 
         <div class="form-control">
             <label for="phone">Телефон</label>
-            <input type="text" name="phone" id="phone">
+            <input type="text" name="phone" id="phone" value="{{# if isEditingMode}}{{user.phone}}{{/if}}">
         </div>
 
         <div class="form-control">
@@ -62,8 +62,19 @@
             <input type="radio" name="role" id="isHandyMan" value="HandyMan">
         </div>
 
+        <input type="hidden" name="userId" value="{{user._id}}">
+
         <div>
-            <button type="submit">Создать нового пользователя</button>
+            <button type="submit">{{#if isEditingMode}} Обновить данные пользователя {{else}} Создать нового пользователя {{/if}}</button>
         </div>
+
     </form>
+
+    <div>
+        {{#if isEditingMode}}
+            <form action="/delete-user/{{user._id}}" value="{{ user._id }}" method="post" name="userId">
+                <button type="submit">Удалить данные пользователя</button>
+            </form>
+        {{/if}}
+    </div>
 </main>

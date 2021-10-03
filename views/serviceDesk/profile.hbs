@@ -8,4 +8,16 @@
     <p><strong>Email:</strong> {{ user.email }}</p>
     <p><strong>Телефон:</strong> {{ user.phone }}</p>
     <p><strong>Кабинет:</strong> {{ user.location }}</p>
+
+    <h1>Мои задачи</h1>
+    <div>
+        {{#each tasks}}
+            <p><strong>Краткое описание задачи: </strong>{{ this.description }}</p>
+            <p><strong>Автор задачи: </strong>{{ this.problemMakerName }}</p>
+            <p><strong>Дата создания задачи: </strong>{{ this.createdAt }}</p>
+            <div>
+                <a href="task-details/:{{ this._id }}">Детали задачи</a>
+            </div>
+        {{/each}}
+    </div>
 </main>

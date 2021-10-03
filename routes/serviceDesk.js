@@ -15,6 +15,18 @@ router.get('/service-catalog', auth, serviceDeskController.getServiceCatalog);
 
 router.get('/software-problems', auth, serviceDeskController.getProblemDescriptionSoftware);
 
-router.post('/new-software-problem', auth, serviceDeskController.postProblemDescriptionSoftware);
+router.get('/office-equipment-problems', auth, serviceDeskController.getProblemDescriptionOfficeEquipment);
+
+router.get('/furniture-problems', auth, serviceDeskController.getProblemDescriptionFurniture);
+
+router.get('/profile-problems', auth, serviceDeskController.getProblemDescriptionAdmin);
+
+router.post('/new-problem', auth, serviceDeskController.postProblemDescription);
+
+router.get('/task-details/:taskId', auth, serviceDeskController.getTaskDetails);
+
+router.post('/set-accepted-time/:taskId', auth, serviceDeskController.postSetAcceptedTime);
+
+router.post('/set-solved-time/:taskId', auth, serviceDeskController.postSetSolvedTime);
 
 module.exports = router;

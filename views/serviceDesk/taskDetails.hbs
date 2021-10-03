@@ -1,0 +1,20 @@
+<main>
+    <div>
+        <p><strong>Краткое описание проблемы: </strong>{{ task.description }}</p>
+        <p><strong>Приорите решения задачи: </strong>{{ task.priority }}</p>
+        <p><strong>Заявитель: </strong>{{ task.problemMakerName }}</p>
+        <p><strong>Должность заявителя: </strong>{{ task.problemMakerRole }}</p>
+        <p><strong>Кабинет заявителя: </strong>{{ task.problemMakerLocation }}</p>
+        <p><strong>Время подачи заявки: </strong>{{ task.createdAt }}</p>
+        <p><strong>Время принятия заявки в работу:</strong> {{ task.acceptedAt }}</p>
+    </div>
+
+    <div>
+        <form action="/set-accepted-time/:{{ task._id }}" method="post" name="taskId">
+            <button type="submit" {{#if isBusy}}disabled{{/if}}>Начать работу над заявкой</button>
+        </form>
+        <form action="/set-solved-time/:{{ task._id }}" method="post" name="taskId">
+            <button type="submit" {{#if isBusy}}{{else}}disabled{{/if}}>Закончить работу над заявкой</button>
+        </form>
+    </div>
+</main>

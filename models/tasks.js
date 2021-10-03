@@ -47,6 +47,10 @@ const taskSchema = new mongoose.Schema({
     solvedAt: {
         type: Date,
         default: null
+    },
+    isSolved: {
+        type: Boolean,
+        default: false
     }
 });
 
