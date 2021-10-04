@@ -49,7 +49,9 @@ exports.postUpdateUser = async (req, res) => {
         user.role = req.body.role;
 
         req.body.password.length >= 8 ? user.password = req.body.password : null;
-        req.body.role.length !== 0 ? user.role = req.body.role : null;
+        req.body.role !== undefined ? user.role = req.body.role : user.role = req.user.role;
+
+        console.log(req.body);
 
         await user.save();
 

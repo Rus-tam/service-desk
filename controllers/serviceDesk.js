@@ -144,6 +144,7 @@ exports.postSetSolvedTime = async (req, res) => {
         task.isSolved = true;
         await task.save();
         req.user.isBusy = false;
+        req.user.solvedProblemsNumber++;
         await req.user.save();
 
         await res.redirect('/profile');
