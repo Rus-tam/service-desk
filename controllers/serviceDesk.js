@@ -2,15 +2,38 @@ const User = require('../models/user');
 const Task = require('../models/tasks');
 const workerFinder = require('../utils/workerFinder');
 
-exports.getIndexPage = (req, res, next) => {
-    res.render('serviceDesk/index', {
-        docTitle: 'Регистрация заявок',
-        isAdmin: req.isAdmin,
-        user: req.user
-    });
+exports.getIndexPage = async (req, res, next) => {
+    try {
+        const tasks = await Task.find({ problemMakerId: req.user._id }).lean();
+        tasks.forEach((task) => {
+           if (task.acceptedAt < new Date(2020)) {
+               task.acceptedAt = '-';
+           }
+           if (task.acceptedAt === '-') {
+               task.status = 'В очереди';
+           } else if (task.acceptedAt > new Date(2020) && !task.isSolved) {
+               task.status = 'В процессе решения';
+           } else {
+               task.status = 'Задача завершена';
+           }
+        });
+
+        res.render('serviceDesk/index', {
+            docTitle: 'Регистрация заявок',
+            isAdmin: req.isAdmin,
+            user: req.user,
+            tasks: tasks
+        });
+    } catch (e) {
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
+    }
 };
 
-exports.getAboutPage = (req, res, next) => {
+exports.getAboutPage = (req, res) => {
     res.render('serviceDesk/about', {
         docTitle: 'Инфо',
         isAdmin: req.isAdmin,
@@ -28,8 +51,11 @@ exports.getProfile = async (req, res) => {
             tasks: tasks
         });
     } catch (e) {
-        console.log(e);
-        res.send('Что-то сломалось');
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     };
 };
 
@@ -96,8 +122,11 @@ exports.postProblemDescription = async (req, res) => {
 
       await res.redirect('/');
   }  catch (e) {
-      res.send('Что-то сломалось');
-      console.log(e)
+      res.render('error', {
+          docTitle: 'Ошибка',
+          message: 'Что-то пошло не так!',
+          error: e
+      });
   }
 };
 
@@ -114,8 +143,11 @@ exports.getTaskDetails = async (req, res) => {
             isBusy: req.user.isBusy
         })
     } catch (e) {
-        console.log(e);
-        res.send('Что-то сломалось!');
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     }
 };
 
@@ -131,8 +163,11 @@ exports.postSetAcceptedTime = async (req, res) => {
 
         await res.redirect('/profile');
     } catch (e) {
-        console.log(e);
-        res.send('Что-то пошло не так!');
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     };
 };
 
@@ -149,7 +184,10 @@ exports.postSetSolvedTime = async (req, res) => {
 
         await res.redirect('/profile');
     } catch (e) {
-        console.log(e);
-        res.send('Что-то пошло не так!');
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     }
 };

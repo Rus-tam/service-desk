@@ -15,7 +15,6 @@ const workerFinder = async (destination) => {
     } else {
         const workerIndex = Math.floor((Math.random() * (workers.length + 1 )));
         const worker = workers[workerIndex];
-        console.log(worker);
         return worker
     }
 };

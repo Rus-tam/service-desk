@@ -1,15 +1,19 @@
 const User = require('../models/user')
 
 exports.getNewUserPage = (req, res, next) => {
-    if (req.isAdmin) {
+    try {
         res.render('admin/newUser', {
             docTitle: 'Новый пользователь',
             isAdmin: req.isAdmin,
             user: req.user
         });
-    } else {
-        res.redirect('/');
-    }
+    } catch (e) {
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
+    };
 };
 
 exports.postNewUser = async (req, res) => {
@@ -30,7 +34,11 @@ exports.postNewUser = async (req, res) => {
         await user.generateAuthToken();
         await res.redirect('/');
     } catch (e) {
-      res.status(400).send('Something goes wrong');
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     };
 };
 
@@ -57,8 +65,11 @@ exports.postUpdateUser = async (req, res) => {
 
         await res.redirect('/users');
     } catch (e) {
-        console.log(e);
-        res.send('Что-то пошло не так');
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     }
 }
 
@@ -77,7 +88,11 @@ exports.getUsers = async (req, res) => {
             await res.redirect('/');
         };
     } catch (e) {
-        console.log(e);
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     }
 };
 
@@ -92,18 +107,25 @@ exports.getUser = async (req, res) => {
             isEditingMode: true,
         });
     } catch (e) {
-        console.log(e);
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     }
 };
 
 exports.postDeleteUser = async (req, res) => {
   try {
       const userId = req.params.userId;
-      const user = await User.deleteOne({ _id: userId });
+      await User.deleteOne({ _id: userId });
       await res.redirect('/users');
   } catch (e) {
-      console.log(e);
-      res.send('Что-то пошло не так с удалением данным пользователя');
+      res.render('error', {
+          docTitle: 'Ошибка',
+          message: 'Что-то пошло не так!',
+          error: e
+      });
   }
 };
 

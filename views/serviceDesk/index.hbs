@@ -2,6 +2,38 @@
     <h1>Добро пожаловать в сервис регистрации заявок</h1>
 
     <div>
+        <table border="2">
+            <tr>
+                <th>
+                    <p><strong>Краткое описание задачи</strong></p>
+                </th>
+                <th>
+                    <p><strong>Время подачи заявки</strong></p>
+                </th>
+                <th>
+                    <p><strong>Исполнитель</strong></p>
+                </th>
+                <th>
+                    <p><strong>Зарегистрирована</strong></p>
+                </th>
+                <th>
+                    <p><strong>Статус</strong></p>
+                </th>
+            </tr>
+            {{#each tasks}}
+                <tr>
+                    <td>{{ this.description }}</td>
+                    <td>{{ this.createdAt }}</td>
+                    <td>{{ this.problemSolverName }}</td>
+                    <td>{{ this.acceptedAt }}</td>
+                    <td>{{ this.status }}</td>
+                </tr>
+            {{/each}}
+
+        </table>
+    </div>
+
+    <div>
         <a href="/service-catalog">Выбор категории</a>
     </div>
 </main>

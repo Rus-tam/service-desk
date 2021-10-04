@@ -13,22 +13,30 @@ exports.postLogin = async (req, res, next) => {
         await res.cookie('access_token', 'Bearer ' + token, { httpOnly: true });
         await res.redirect('/');
     } catch (e) {
-        res.status(400).send('Что-то пошло не так!');
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
     }
 };
 
-exports.getAuthorizationRequest = (req, res, next) => {
+exports.getAuthorizationRequest = (req, res) => {
     res.render('auth/authorizationRequest', {
         docTitle: 'Пожалуйста, авторизуйтесь'
     });
 };
 
-exports.postLogout = async (req, res, next) => {
+exports.postLogout = async (req, res) => {
   try {
       req.user.tokens = [];
       await req.user.save();
       await res.redirect('/login');
   }  catch (e) {
-      res.status(500).send('Что-то сломалось!');
+      res.render('error', {
+          docTitle: 'Ошибка',
+          message: 'Что-то пошло не так!',
+          error: e
+      });
   }
 };
