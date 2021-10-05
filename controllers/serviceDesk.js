@@ -22,7 +22,8 @@ exports.getIndexPage = async (req, res, next) => {
             docTitle: 'Регистрация заявок',
             isAdmin: req.isAdmin,
             user: req.user,
-            tasks: tasks
+            tasks: tasks,
+            activeRequest: true
         });
     } catch (e) {
         res.render('error', {
@@ -37,7 +38,8 @@ exports.getAboutPage = (req, res) => {
     res.render('serviceDesk/about', {
         docTitle: 'Инфо',
         isAdmin: req.isAdmin,
-        user: req.user
+        user: req.user,
+        activeAbout: true
     });
 };
 
@@ -48,7 +50,8 @@ exports.getProfile = async (req, res) => {
             docTitle: 'Профиль пользователя',
             isAdmin: req.isAdmin,
             user: req.user.toJSON(),
-            tasks: tasks
+            tasks: tasks,
+            activeProfile: true
         });
     } catch (e) {
         res.render('error', {

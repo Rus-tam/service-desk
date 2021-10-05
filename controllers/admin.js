@@ -5,7 +5,8 @@ exports.getNewUserPage = (req, res, next) => {
         res.render('admin/newUser', {
             docTitle: 'Новый пользователь',
             isAdmin: req.isAdmin,
-            user: req.user
+            user: req.user,
+            activeNewUser: true
         });
     } catch (e) {
         res.render('error', {
@@ -59,8 +60,6 @@ exports.postUpdateUser = async (req, res) => {
         req.body.password.length >= 8 ? user.password = req.body.password : null;
         req.body.role !== undefined ? user.role = req.body.role : user.role = req.user.role;
 
-        console.log(req.body);
-
         await user.save();
 
         await res.redirect('/users');
@@ -70,8 +69,8 @@ exports.postUpdateUser = async (req, res) => {
             message: 'Что-то пошло не так!',
             error: e
         });
-    }
-}
+    };
+};
 
 exports.getUsers = async (req, res) => {
     try {
@@ -82,7 +81,8 @@ exports.getUsers = async (req, res) => {
                 docTitle: 'Список пользователей',
                 isAdmin: req.isAdmin,
                 user: req.user,
-                users: users
+                users: users,
+                activeUsers: true
             });
         } else {
             await res.redirect('/');
@@ -100,11 +100,11 @@ exports.getUser = async (req, res) => {
     try {
         const userId = req.params.userId.replace(':', '');
         const user = await User.find({ _id: userId });
-        res.render('admin/newUser', {
+        await res.render('admin/newUser', {
             docTitle: 'Редактирование профиля',
             user: user[0].toJSON(),
             isAdmin: req.isAdmin,
-            isEditingMode: true,
+            isEditingMode: true
         });
     } catch (e) {
         res.render('error', {

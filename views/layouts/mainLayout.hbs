@@ -5,24 +5,40 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <meta http-equiv="X-UA-Compatible" content="ie=edge">
             <title>{{ docTitle }}</title>
-            <link rel="stylesheet" href="public/stylesheets/style.css">
+            <link rel="stylesheet" href="/stylesheets/main.css">
+            {{#if activeNewUser}}<link rel="stylesheet" href="/stylesheets/form.css">{{/if}}
+            {{#if isEditingMode}}
+                <link rel="stylesheet" href="/stylesheets/form.css">
+            {{/if}}
         </head>
         <body>
-            <header>
-                <a href="/">Регистрация заявок</a>
-                {{#if isAdmin}}
-                    <a href="/new-user">Новый пользователь</a>
-                    <a href="/users">Список пользователей</a>
-                {{/if}}
-                <a href="/profile">Профиль</a>
-                <a href="/about">Инфо</a>
-                {{#if user}}
-                    <form action="/logout" method="post">
-                        <button type="submit">Logout</button>
-                    </form>
-                {{else}}
-                    <a href="/login">Вход</a>
-                {{/if}}
+            <header class="main-header">
+                <nav class="main-header__nav">
+                    <ul class="main-header__item-list">
+                        <li class="main-header__item"><a class="{{#if activeRequest}}active{{/if}}" href="/">Регистрация заявок</a></li>
+
+                        {{#if isAdmin}}
+                            <li class="main-header__item"><a class="{{#if activeNewUser}}active{{/if}}" href="/new-user">Новый пользователь</a></li>
+                            <li class="main-header__item"><a class="{{#if activeUsers}}active{{/if}}" href="/users">Список пользователей</a></li>
+                        {{/if}}
+                        <li class="main-header__item"><a class="{{#if activeProfile}}active{{/if}}" href="/profile">Профиль</a></li>
+                        <li class="main-header__item"><a class="{{#if activeAbout}}active{{/if}}" href="/about">Инфо</a></li>
+                    </ul>
+
+                    <ul class="main-header__item-list">
+                        {{#if user}}
+                            <li class="main-header__item">
+                                <form action="/logout" method="post">
+                                    <button type="submit">Выход</button>
+                                </form>
+                            </li>
+                        {{else}}
+                            <li class="main-header__item">
+                                <a href="/login">Вход</a>
+                            </li>
+                        {{/if}}
+                    </ul>
+                </nav>
             </header>
                 {{{ body }}}
         </body>

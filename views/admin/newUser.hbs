@@ -1,80 +1,87 @@
 <main>
-    <form action="{{#if isEditingMode}}/update-user{{else}}/new-user{{/if}}" method="POST">
-        <div class="form-control">
-            <label for="surname">Фамилия</label>
-            <input type="text" name="surname" id="surname" value="{{# if isEditingMode}}{{user.surname}}{{/if}}">
+    <div class="form-container">
+        <form action="{{#if isEditingMode}}/update-user{{else}}/new-user{{/if}}" method="POST">
+            <div class="form-control">
+                <label for="surname">Фамилия</label>
+                <input type="text" name="surname" id="surname" value="{{# if isEditingMode}}{{user.surname}}{{/if}}">
+            </div>
+
+            <div class="form-control">
+                <label for="name">Имя</label>
+                <input type="text" name="name" id="name" value="{{# if isEditingMode}}{{user.name}}{{/if}}">
+            </div>
+
+            <div class="form-control">
+                <label for="patronymic">Отчество</label>
+                <input type="text" name="patronymic" id="patronymic" value="{{# if isEditingMode}}{{user.patronymic}}{{/if}}">
+            </div>
+
+            <div class="form-control">
+                <label for="department">Департамент</label>
+                <input type="text" name="department" id="department" value="{{# if isEditingMode}}{{user.department}}{{/if}}">
+            </div>
+
+            <div class="form-control">
+                <label for="location">Местоположение</label>
+                <input type="text" name="location" id="location" value="{{# if isEditingMode}}{{user.location}}{{/if}}">
+            </div>
+
+            <div class="form-control">
+                <label for="position">Должность</label>
+                <input type="text" name="position" id="position" value="{{# if isEditingMode}}{{user.position}}{{/if}}">
+            </div>
+
+            <div class="form-control">
+                <label for="email">Емейл</label>
+                <input type="email" name="email" id="email" value="{{# if isEditingMode}}{{user.email}}{{/if}}">
+            </div>
+
+            <div class="form-control">
+                <label for="phone">Телефон</label>
+                <input type="text" name="phone" id="phone" value="{{# if isEditingMode}}{{user.phone}}{{/if}}">
+            </div>
+
+            <div class="form-control">
+                <label for="password">Пароль</label>
+                <input type="password" name="password" id="password">
+            </div>
+
+            <div class="radio-control">
+                <label for="isAdmin" id="role">Администратор</label>
+                <input type="radio" name="role" id="isAdmin" value="Admin">
+
+                <label for="isOfficePlankton" id="role">Офисный работник</label>
+                <input type="radio" name="role" id="isOfficePlankton" value="OfficePlankton">
+            </div>
+
+            <div class="radio-control">
+                <label for="isOfficeGod" id="role">Программист</label>
+                <input type="radio" name="role" id="isOfficeGod" value="OfficeGod">
+
+                <label for="isAnyKey" id="role">Техник</label>
+                <input type="radio" name="role" id="isAnyKey" value="AnyKey">
+            </div>
+
+            <div class="radio-control">
+                <label for="isHandyMan" id="role">Сервисный работник</label>
+                <input type="radio" name="role" id="isHandyMan" value="HandyMan">
+            </div>
+
+            <input type="hidden" name="userId" value="{{user._id}}">
+
+            <div class="button">
+                <button type="submit">{{#if isEditingMode}} Обновить данные пользователя {{else}} Создать нового пользователя {{/if}}</button>
+            </div>
+
+        </form>
+
+
+        <div class="button">
+            {{#if isEditingMode}}
+                <form action="/delete-user/{{user._id}}" value="{{ user._id }}" method="post" name="userId">
+                    <button type="submit">Удалить данные пользователя</button>
+                </form>
+            {{/if}}
         </div>
-
-        <div class="form-control">
-            <label for="name">Имя</label>
-            <input type="text" name="name" id="name" value="{{# if isEditingMode}}{{user.name}}{{/if}}">
-        </div>
-
-        <div class="form-control">
-            <label for="patronymic">Отчество</label>
-            <input type="text" name="patronymic" id="patronymic" value="{{# if isEditingMode}}{{user.patronymic}}{{/if}}">
-        </div>
-
-        <div class="form-control">
-            <label for="department">Департамент</label>
-            <input type="text" name="department" id="department" value="{{# if isEditingMode}}{{user.department}}{{/if}}">
-        </div>
-
-        <div class="form-control">
-            <label for="location">Местоположение</label>
-            <input type="text" name="location" id="location" value="{{# if isEditingMode}}{{user.location}}{{/if}}">
-        </div>
-
-        <div class="form-control">
-            <label for="position">Должность</label>
-            <input type="text" name="position" id="position" value="{{# if isEditingMode}}{{user.position}}{{/if}}">
-        </div>
-
-        <div class="form-control">
-            <label for="email">Емейл</label>
-            <input type="email" name="email" id="email" value="{{# if isEditingMode}}{{user.email}}{{/if}}">
-        </div>
-
-        <div class="form-control">
-            <label for="phone">Телефон</label>
-            <input type="text" name="phone" id="phone" value="{{# if isEditingMode}}{{user.phone}}{{/if}}">
-        </div>
-
-        <div class="form-control">
-            <label for="password">Пароль</label>
-            <input type="password" name="password" id="password">
-        </div>
-
-        <div class="form-control">
-            <label for="isAdmin">Админ</label>
-            <input type="radio" name="role" id="isAdmin" value="Admin">
-
-            <label for="isOfficePlankton">Офисный работник</label>
-            <input type="radio" name="role" id="isOfficePlankton" value="OfficePlankton">
-
-            <label for="isOfficeGod">Программист</label>
-            <input type="radio" name="role" id="isOfficeGod" value="OfficeGod">
-
-            <label for="isAnyKey">Техник</label>
-            <input type="radio" name="role" id="isAnyKey" value="AnyKey">
-
-            <label for="isHandyMan">Сервисный работник</label>
-            <input type="radio" name="role" id="isHandyMan" value="HandyMan">
-        </div>
-
-        <input type="hidden" name="userId" value="{{user._id}}">
-
-        <div>
-            <button type="submit">{{#if isEditingMode}} Обновить данные пользователя {{else}} Создать нового пользователя {{/if}}</button>
-        </div>
-
-    </form>
-
-    <div>
-        {{#if isEditingMode}}
-            <form action="/delete-user/{{user._id}}" value="{{ user._id }}" method="post" name="userId">
-                <button type="submit">Удалить данные пользователя</button>
-            </form>
-        {{/if}}
     </div>
 </main>
