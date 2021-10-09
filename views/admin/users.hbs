@@ -1,14 +1,18 @@
 <main>
-    {{#each users}}
-        <article>
-            <p><strong>Фамилия: </strong>{{this.surname}}</p>
-            <p><strong>Имя: </strong>{{this.name}}</p>
-            <p><strong>Отчество: </strong>{{this.patronymic}}</p>
-            <p><strong>Департамент: </strong>{{this.department}}</p>
-            <p><strong>Должность: </strong>{{this.position}}</p>
-            <div>
-                <a href="user/:{{this._id}}">Редактировать профиль</a>
-            </div>
-        </article>
-    {{/each}}
+    <div class="grid">
+        {{#each users}}
+            <article class="user-info">
+                <p><strong>Фамилия: </strong>{{this.surname}}</p>
+                <p><strong>Имя: </strong>{{this.name}}</p>
+                <p><strong>Отчество: </strong>{{this.patronymic}}</p>
+                <p><strong>Департамент: </strong>{{this.department}}</p>
+                <p><strong>Должность: </strong>{{this.position}}</p>
+                <div class="button">
+                    <form action="user/:{{this._id}}" method="get">
+                        <button type="submit">Редактировать профиль</button>
+                    </form>
+                </div>
+            </article>
+        {{/each}}
+    </div>
 </main>

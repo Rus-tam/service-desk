@@ -2,7 +2,8 @@ const User = require('../models/user');
 
 exports.getLogin = (req, res, next) => {
     res.render('auth/login', {
-        docTitle: 'Страница авторизации'
+        docTitle: 'Страница авторизации',
+        loginCSS: true
     })
 };
 

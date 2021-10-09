@@ -1,11 +1,17 @@
 <main>
-    <form action="/login" method="POST">
-        <label for="email">Адрес электронной почты</label>
-        <input type="email" name="email" id="email">
+    <form action="/login" method="POST" class="login-form">
+        <div class="form-control">
+            <label for="email">Адрес электронной почты</label>
+            <input type="email" name="email" id="email">
+        </div>
 
-        <label for="password">Пароль</label>
-        <input type="password" name="password" id="password">
+        <div class="form-control">
+            <label for="password">Пароль</label>
+            <input type="password" name="password" id="password">
+        </div>
 
-        <button type="submit">Войти</button>
+        <div class="button">
+            <button type="submit">Войти</button>
+        </div>
     </form>
 </main>

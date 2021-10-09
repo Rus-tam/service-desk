@@ -1,23 +1,25 @@
 <main>
-    <h1>Профиль пользователя</h1>
-    <p><strong>Фамилия:</strong> {{ user.surname }}</p>
-    <p><strong>Имя:</strong> {{ user.name }}</p>
-    <p><strong>Отчество:</strong> {{ user.patronymic }}</p>
-    <p><strong>Департамент:</strong> {{ user.department }}</p>
-    <p><strong>Должность: </strong>{{ user.position }}</p>
-    <p><strong>Email:</strong> {{ user.email }}</p>
-    <p><strong>Телефон:</strong> {{ user.phone }}</p>
-    <p><strong>Кабинет:</strong> {{ user.location }}</p>
+    <div class="container">
+        <p><strong>Фамилия:</strong> {{ user.surname }}</p>
+        <p><strong>Имя:</strong> {{ user.name }}</p>
+        <p><strong>Отчество:</strong> {{ user.patronymic }}</p>
+        <p><strong>Департамент:</strong> {{ user.department }}</p>
+        <p><strong>Должность: </strong>{{ user.position }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Телефон:</strong> {{ user.phone }}</p>
+        <p><strong>Кабинет:</strong> {{ user.location }}</p>
+    </div>
 
     <h1>Мои задачи</h1>
-    <div>
+    <div class="grid">
         {{#each tasks}}
-            <p><strong>Краткое описание задачи: </strong>{{ this.description }}</p>
-            <p><strong>Автор задачи: </strong>{{ this.problemMakerName }}</p>
-            <p><strong>Дата создания задачи: </strong>{{ this.createdAt }}</p>
-            <div>
-                <a href="task-details/:{{ this._id }}">Детали задачи</a>
-            </div>
+            <form action="task-details/:{{this._id}}" method="get">
+                <button type="submit">
+                    <p><strong>Краткое описание задачи: </strong>{{ this.description }}</p>
+                    <p><strong>Автор задачи: </strong>{{ this.problemMakerName }}</p>
+                    <p><strong>Дата создания задачи: </strong>{{ this.createdAt }}</p>
+                </button>
+            </form>
         {{/each}}
     </div>
 </main>

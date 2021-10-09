@@ -63,42 +63,92 @@ exports.getProfile = async (req, res) => {
 };
 
 exports.getServiceCatalog = (req, res) => {
-    res.render('serviceDesk/serviceCatalog', {
-        docTitle: 'Каталог',
-        isAdmin: req.isAdmin
-    });
+    try {
+        res.render('serviceDesk/serviceCatalog', {
+            docTitle: 'Каталог',
+            isAdmin: req.isAdmin,
+            user: req.user,
+            activeCatalog: true
+        });
+    } catch (e) {
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
+    }
 };
 
 exports.getProblemDescriptionSoftware = (req, res) => {
-    res.render('serviceDesk/problemDescription', {
-        docTitle: 'Заполнение формы',
-        isAdmin: req.isAdmin,
-        destination: ['OfficeGod']
-    });
+    try {
+        res.render('serviceDesk/problemDescription', {
+            docTitle: 'Заполнение формы',
+            isAdmin: req.isAdmin,
+            user: req.user,
+            destination: ['OfficeGod'],
+            problemDescription: true
+        });
+    } catch (e) {
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
+    }
 };
 
 exports.getProblemDescriptionOfficeEquipment = (req, res) => {
-  res.render('serviceDesk/problemDescription', {
-      docTitle: 'Заполнение формы',
-      isAdmin: req.isAdmin,
-      destination: ['AnyKey']
-  });
+    try {
+        res.render('serviceDesk/problemDescription', {
+            docTitle: 'Заполнение формы',
+            isAdmin: req.isAdmin,
+            user: req.user,
+            destination: ['AnyKey'],
+            problemDescription: true
+        });
+    } catch (e) {
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
+    }
 };
 
 exports.getProblemDescriptionFurniture = (req, res) => {
-  res.render('serviceDesk/problemDescription', {
-     docTitle: 'Заполнение формы',
-     isAdmin: req.isAdmin,
-     destination: ['HandyMan']
-  });
+    try {
+        res.render('serviceDesk/problemDescription', {
+            docTitle: 'Заполнение формы',
+            isAdmin: req.isAdmin,
+            user: req.user,
+            destination: ['HandyMan'],
+            problemDescription: true
+        });
+    } catch (e) {
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
+    }
 };
 
 exports.getProblemDescriptionAdmin = (req, res) => {
-    res.render('serviceDesk/problemDescription', {
-        docTitle: 'Заполнение формы',
-        isAdmin: req.isAdmin,
-        destination: ['Admin']
-    });
+    try {
+        res.render('serviceDesk/problemDescription', {
+            docTitle: 'Заполнение формы',
+            isAdmin: req.isAdmin,
+            user: req.user,
+            destination: ['Admin'],
+            problemDescription: true
+        });
+    } catch (e) {
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
+    }
 };
 
 exports.postProblemDescription = async (req, res) => {
@@ -143,7 +193,8 @@ exports.getTaskDetails = async (req, res) => {
             isAdmin: req.isAdmin,
             task: task.toJSON(),
             user: req.user,
-            isBusy: req.user.isBusy
+            isBusy: req.user.isBusy,
+            activeTaskDetails: true
         })
     } catch (e) {
         res.render('error', {

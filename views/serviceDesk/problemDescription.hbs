@@ -6,22 +6,25 @@
                 <textarea name="description" id="description" rows="20"></textarea>
             </div>
 
-            <div class="form-control">
-                <p>Приоритет решения задачи</p>
-
+            <p>Приоритет решения задачи</p>
+            <div class="radio-control">
                 <label for="highPriority">Высокий</label>
                 <input type="radio" name="priority" id="highPriority" value="high">
+            </div>
 
+            <div class="radio-control">
                 <label for="mediumPriority">Средний</label>
                 <input type="radio" name="priority" id="mediumPriority" value="medium">
+            </div>
 
+            <div class="radio-control">
                 <label for="lowPriority">Низкий</label>
                 <input type="radio" name="priority" id="lowPriority" value="low">
             </div>
 
             <input type="hidden" type="submit" value="{{destination}}" name="destination">
 
-            <div>
+            <div class="button">
                 <button type="submit">Отправить заявку</button>
             </div>
         </form>

@@ -1,9 +1,9 @@
 <main>
     <h1>Добро пожаловать в сервис регистрации заявок</h1>
 
-    <div>
+    <div class="table-part">
         <table border="2">
-            <tr>
+            <tr class="table-head">
                 <th>
                     <p><strong>Краткое описание задачи</strong></p>
                 </th>
@@ -22,7 +22,7 @@
             </tr>
             {{#each tasks}}
                 <tr>
-                    <td>{{ this.description }}</td>
+                    <td id="left-align">{{ this.description }}</td>
                     <td>{{ this.createdAt }}</td>
                     <td>{{ this.problemSolverName }}</td>
                     <td>{{ this.acceptedAt }}</td>
@@ -33,7 +33,9 @@
         </table>
     </div>
 
-    <div>
-        <a href="/service-catalog">Выбор категории</a>
+    <div class="button">
+        <form action="/service-catalog" method="get">
+            <button type="submit">Выбор категории</button>
+        </form>
     </div>
 </main>
