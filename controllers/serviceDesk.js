@@ -1,21 +1,33 @@
 const User = require('../models/user');
 const Task = require('../models/tasks');
 const workerFinder = require('../utils/workerFinder');
+const timeWorker = require('../utils/timeWorker');
 
 exports.getIndexPage = async (req, res, next) => {
     try {
-        const tasks = await Task.find({ problemMakerId: req.user._id }).lean();
+        let isTaskPresent;
+        let tasks = await Task.find({ problemMakerId: req.user._id }).lean();
+        tasks.length === 0 ? isTaskPresent = false : isTaskPresent = true;
+
         tasks.forEach((task) => {
+            if (task.status === 'Задача завершена') {
+                const pastedTime = new Date().getTime() - new Date(task.solvedAt);
+                pastedTime > 172800000 ? task.status = 'Задача завершена более 2 суток тому назад' : null;
+            }
+
            if (task.acceptedAt < new Date(2020)) {
                task.acceptedAt = '-';
            }
-           if (task.acceptedAt === '-') {
-               task.status = 'В очереди';
-           } else if (task.acceptedAt > new Date(2020) && !task.isSolved) {
-               task.status = 'В процессе решения';
-           } else {
-               task.status = 'Задача завершена';
-           }
+
+           const normalTimeFormatCreatedTime = timeWorker(task.createdAt);
+           task.createdAt = normalTimeFormatCreatedTime;
+
+           const normalTimeFormatAcceptedTime = timeWorker(task.acceptedAt);
+           task.acceptedAt = normalTimeFormatAcceptedTime;
+        });
+
+        tasks = tasks.filter(task => {
+            return task.status != 'Задача завершена более 2 суток тому назад'
         });
 
         res.render('serviceDesk/index', {
@@ -23,7 +35,8 @@ exports.getIndexPage = async (req, res, next) => {
             isAdmin: req.isAdmin,
             user: req.user,
             tasks: tasks,
-            activeRequest: true
+            activeRequest: true,
+            isTaskPresent
         });
     } catch (e) {
         res.render('error', {
@@ -46,6 +59,10 @@ exports.getAboutPage = (req, res) => {
 exports.getProfile = async (req, res) => {
     try {
         const tasks = await Task.find({ $and: [{ problemSolverId: req.user._id.toString() }, { isSolved: false }]}).lean();
+        tasks.forEach(task => {
+           const normalTimeFormatCreatedAt = timeWorker(task.createdAt);
+           task.createdAt = normalTimeFormatCreatedAt;
+        });
         await res.render('serviceDesk/profile', {
             docTitle: 'Профиль пользователя',
             isAdmin: req.isAdmin,
@@ -160,11 +177,11 @@ exports.postProblemDescription = async (req, res) => {
          problemMakerRole: req.user.role,
          problemMakerLocation: req.user.location,
          problemMakerId: req.user._id.toString(),
-         createdAt: new Date,
+         createdAt: new Date().getTime(),
          destination: req.body.destination,
-          problemSolverName: '',
-          problemSolverId: '',
-          solvedAt: null
+         problemSolverName: '',
+         problemSolverId: '',
+         solvedAt: null
       });
 
       const worker = await workerFinder(task.destination.toString());
@@ -185,17 +202,39 @@ exports.postProblemDescription = async (req, res) => {
 
 exports.getTaskDetails = async (req, res) => {
     try {
+        let isBlocked;
+        let counter = 0;
+        let isTwoProcessedTasks;
         const taskId = req.params.taskId.replace(':', '');
-        const task = await Task.findOne({ _id: taskId });
+        const task = await Task.findOne({ _id: taskId }).lean();
+
+        if (task.status === 'В очереди') {
+            isBlocked = false;
+        } else if (task.status === 'В процессе решения') {
+            isBlocked = true
+        }
+
+        const normalTimeFormatCreatedAt = timeWorker(task.createdAt);
+        task.createdAt = normalTimeFormatCreatedAt;
+
+        const tasks = await Task.find({ $and: [{ problemSolverId: req.user._id.toString() }, { isSolved: false }]}).lean();
+        tasks.forEach(task => {
+           task.status === 'В процессе решения' ? counter++ : null;
+        });
+        counter >= 1 ? isTwoProcessedTasks = true : isTwoProcessedTasks = false;
+        console.log(tasks);
+        console.log(counter);
+        console.log(isTwoProcessedTasks);
 
         res.render('serviceDesk/taskDetails', {
             docTitle: 'Детали задачи',
             isAdmin: req.isAdmin,
-            task: task.toJSON(),
+            task: task,
             user: req.user,
-            isBusy: req.user.isBusy,
-            activeTaskDetails: true
-        })
+            activeTaskDetails: true,
+            isBlocked,
+            isTwoProcessedTasks
+        });
     } catch (e) {
         res.render('error', {
             docTitle: 'Ошибка',
@@ -209,7 +248,8 @@ exports.postSetAcceptedTime = async (req, res) => {
     try {
         const taskId = req.params.taskId.replace(':', '');
         const task = await Task.findOne({ _id: taskId });
-        task.acceptedAt = new Date;
+        task.acceptedAt = new Date().getTime();
+        task.status = 'В процессе решения';
         await task.save();
 
         req.user.isBusy = true;
@@ -229,8 +269,9 @@ exports.postSetSolvedTime = async (req, res) => {
     try {
         const taskId = req.params.taskId.replace(':', '');
         const task = await Task.findOne({ _id: taskId });
-        task.solvedAt = new Date;
+        task.solvedAt = new Date().getTime();
         task.isSolved = true;
+        task.status = 'Задача решена';
         await task.save();
         req.user.isBusy = false;
         req.user.solvedProblemsNumber++;

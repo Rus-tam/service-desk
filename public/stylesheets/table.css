@@ -13,6 +13,8 @@ table {
 
 #left-align {
     text-align: start;
+    width: 500px;
+    overflow-wrap: break-word;
 }
 
 button {

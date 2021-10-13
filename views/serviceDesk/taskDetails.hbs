@@ -12,12 +12,12 @@
 
         <div class="button">
             <form action="/set-accepted-time/:{{ task._id }}" method="post" name="taskId">
-                <button type="submit" {{#if isBusy}}disabled{{/if}}>Начать работу над заявкой</button>
+                <button type="submit" {{#if isBlocked}}disabled{{else}}{{/if}} {{#if isTwoProcessedTasks}}disabled{{else}}{{/if}}>Начать работу над заявкой</button>
             </form>
         </div>
         <div class="button">
             <form action="/set-solved-time/:{{ task._id }}" method="post" name="taskId">
-                <button type="submit" {{#if isBusy}}{{else}}disabled{{/if}}>Закончить работу над заявкой</button>
+                <button type="submit" {{#if isBlocked}}{{else}}disabled{{/if}}>Закончить работу над заявкой</button>
             </form>
         </div>
     </div>

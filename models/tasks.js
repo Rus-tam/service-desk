@@ -27,7 +27,8 @@ const taskSchema = new mongoose.Schema({
         required: true
     },
     createdAt: {
-        type: Date
+        type: Number,
+        default: 0
     },
     destination: {
       type: String,
@@ -41,16 +42,20 @@ const taskSchema = new mongoose.Schema({
         default: 0
     },
     acceptedAt: {
-      type: Date,
+      type: Number,
       default: 0
     },
     solvedAt: {
-        type: Date,
-        default: null
+        type: Number,
+        default: 0
     },
     isSolved: {
         type: Boolean,
         default: false
+    },
+    status: {
+        type: String,
+        default: 'В очереди'
     }
 });
 

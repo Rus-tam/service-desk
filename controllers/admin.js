@@ -1,4 +1,6 @@
-const User = require('../models/user')
+const User = require('../models/user');
+const Task = require('../models/tasks');
+const workerFinder = require("../utils/workerFinder");
 
 exports.getNewUserPage = (req, res, next) => {
     try {
@@ -116,16 +118,17 @@ exports.getUser = async (req, res) => {
 };
 
 exports.postDeleteUser = async (req, res) => {
-  try {
-      const userId = req.params.userId;
-      await User.deleteOne({ _id: userId });
-      await res.redirect('/users');
-  } catch (e) {
-      res.render('error', {
-          docTitle: 'Ошибка',
-          message: 'Что-то пошло не так!',
-          error: e
-      });
-  }
+    try {
+        const userId = req.params.userId;
+        await User.deleteOne({ _id: userId });
+
+        await res.redirect('/users');
+    } catch (e) {
+        res.render('error', {
+            docTitle: 'Ошибка',
+            message: 'Что-то пошло не так!',
+            error: e
+        });
+    }
 };
 

@@ -2,9 +2,10 @@
     <h1>Добро пожаловать в сервис регистрации заявок</h1>
 
     <div class="table-part">
+        {{#if isTaskPresent}}
         <table border="2">
             <tr class="table-head">
-                <th>
+                <th id="first-column">
                     <p><strong>Краткое описание задачи</strong></p>
                 </th>
                 <th>
@@ -29,8 +30,8 @@
                     <td>{{ this.status }}</td>
                 </tr>
             {{/each}}
-
         </table>
+        {{/if}}
     </div>
 
     <div class="button">
