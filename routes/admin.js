@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const accessLimitation = require('../middleware/accessLimitation');
-const searchTasks = require('../middleware/searchTasks');
 
 const adminControllers = require('../controllers/admin');
 
@@ -12,7 +11,7 @@ router.post('/new-user', auth, accessLimitation, adminControllers.postNewUser);
 
 router.post('/update-user', auth, accessLimitation, adminControllers.postUpdateUser);
 
-router.get('/users', auth, accessLimitation, searchTasks, adminControllers.getUsers);
+router.get('/users', auth, accessLimitation, adminControllers.getUsers);
 
 router.get('/user/:userId', auth, accessLimitation, adminControllers.getUser);
 

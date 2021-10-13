@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const Task = require('../models/tasks');
 const workerFinder = require("../utils/workerFinder");
+const findProblemSolver = require('../utils/findNewProblemSolver');
 
 exports.getNewUserPage = (req, res, next) => {
     try {
@@ -121,6 +122,8 @@ exports.postDeleteUser = async (req, res) => {
     try {
         const userId = req.params.userId;
         await User.deleteOne({ _id: userId });
+
+        await findProblemSolver(userId);
 
         await res.redirect('/users');
     } catch (e) {
