@@ -101,3 +101,11 @@ form {
     margin: auto;
     display: block;
 }
+
+.error-container {
+    width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

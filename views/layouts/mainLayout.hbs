@@ -43,7 +43,10 @@
                             <li class="main-header__item"><a class="{{#if activeUsers}}active{{/if}}" href="/users">Список пользователей</a></li>
                         {{/if}}
                         <li class="main-header__item"><a class="{{#if activeProfile}}active{{/if}}" href="/profile">Профиль</a></li>
-                        <li class="main-header__item"><a class="{{#if activeAbout}}active{{/if}}" href="/about">Инфо</a></li>
+                        {{#if user}}
+                        {{else}}
+                            <li class="main-header__item"><a class="{{#if activeAbout}}active{{/if}}" href="/about">Инфо</a></li>
+                        {{/if}}
                     </ul>
 
                     <ul class="main-header__item-list">

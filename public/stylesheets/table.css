@@ -28,6 +28,10 @@ button {
     outline: none;
 }
 
+td {
+    padding: 10px;
+}
+
 .button {
     display: flex;
     flex-direction: row;

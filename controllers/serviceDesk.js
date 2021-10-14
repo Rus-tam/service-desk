@@ -10,7 +10,7 @@ exports.getIndexPage = async (req, res, next) => {
         tasks.length === 0 ? isTaskPresent = false : isTaskPresent = true;
 
         tasks.forEach((task) => {
-            if (task.status === 'Задача завершена') {
+            if (task.status === 'Задача решена') {
                 const pastedTime = new Date().getTime() - new Date(task.solvedAt);
                 pastedTime > 172800000 ? task.status = 'Задача завершена более 2 суток тому назад' : null;
             }

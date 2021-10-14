@@ -15,7 +15,9 @@ exports.getNewUserPage = (req, res, next) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     };
 };
@@ -41,7 +43,9 @@ exports.postNewUser = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     };
 };
@@ -70,7 +74,9 @@ exports.postUpdateUser = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     };
 };
@@ -94,7 +100,9 @@ exports.getUsers = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -113,7 +121,9 @@ exports.getUser = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -130,7 +140,9 @@ exports.postDeleteUser = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
