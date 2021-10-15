@@ -216,6 +216,8 @@ exports.getTaskDetails = async (req, res) => {
 
         const normalTimeFormatCreatedAt = timeWorker(task.createdAt);
         task.createdAt = normalTimeFormatCreatedAt;
+        const normalTimeFormatAcceptedAt = timeWorker(task.acceptedAt);
+        task.acceptedAt = normalTimeFormatAcceptedAt;
 
         const tasks = await Task.find({ $and: [{ problemSolverId: req.user._id.toString() }, { isSolved: false }]}).lean();
         tasks.forEach(task => {
