@@ -2,6 +2,7 @@ const User = require('../models/user');
 const Task = require('../models/tasks');
 const workerFinder = require('../utils/workerFinder');
 const timeWorker = require('../utils/timeWorker');
+const mailSender = require('../utils/mailSender');
 
 exports.getIndexPage = async (req, res, next) => {
     try {
@@ -42,7 +43,9 @@ exports.getIndexPage = async (req, res, next) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -74,7 +77,9 @@ exports.getProfile = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     };
 };
@@ -91,7 +96,9 @@ exports.getServiceCatalog = (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -109,7 +116,9 @@ exports.getProblemDescriptionSoftware = (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -127,7 +136,9 @@ exports.getProblemDescriptionOfficeEquipment = (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -145,7 +156,9 @@ exports.getProblemDescriptionFurniture = (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -163,7 +176,9 @@ exports.getProblemDescriptionAdmin = (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -190,12 +205,18 @@ exports.postProblemDescription = async (req, res) => {
 
       await task.save();
 
+      await mailSender(worker);
+
+
+
       await res.redirect('/');
   }  catch (e) {
       res.render('error', {
           docTitle: 'Ошибка',
           message: 'Что-то пошло не так!',
-          error: e
+          error: e,
+          user: req.user,
+          isAdmin: req.isAdmin
       });
   }
 };
@@ -241,7 +262,9 @@ exports.getTaskDetails = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
@@ -262,7 +285,9 @@ exports.postSetAcceptedTime = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     };
 };
@@ -284,7 +309,9 @@ exports.postSetSolvedTime = async (req, res) => {
         res.render('error', {
             docTitle: 'Ошибка',
             message: 'Что-то пошло не так!',
-            error: e
+            error: e,
+            user: req.user,
+            isAdmin: req.isAdmin
         });
     }
 };
