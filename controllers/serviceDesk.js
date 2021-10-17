@@ -1,8 +1,8 @@
-const User = require('../models/user');
 const Task = require('../models/tasks');
 const workerFinder = require('../utils/workerFinder');
 const timeWorker = require('../utils/timeWorker');
 const mailSender = require('../utils/mailSender');
+const dbCorrector = require('../utils/DB_corrector');
 
 exports.getIndexPage = async (req, res, next) => {
     try {
@@ -30,6 +30,8 @@ exports.getIndexPage = async (req, res, next) => {
         tasks = tasks.filter(task => {
             return task.status != 'Задача завершена более 2 суток тому назад'
         });
+
+        await dbCorrector();
 
         res.render('serviceDesk/index', {
             docTitle: 'Регистрация заявок',
