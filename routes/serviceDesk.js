@@ -1,5 +1,6 @@
 const express = require('express');
 const auth = require('../middleware/auth');
+const averageTimeCounter = require('../middleware/averageTimeCounter');
 const router = express.Router();
 
 const serviceDeskController = require('../controllers/serviceDesk');
@@ -28,6 +29,6 @@ router.get('/task-details/:taskId', auth, serviceDeskController.getTaskDetails);
 
 router.post('/set-accepted-time/:taskId', auth, serviceDeskController.postSetAcceptedTime);
 
-router.post('/set-solved-time/:taskId', auth, serviceDeskController.postSetSolvedTime);
+router.post('/set-solved-time/:taskId', auth, serviceDeskController.postSetSolvedTime, averageTimeCounter);
 
 module.exports = router;

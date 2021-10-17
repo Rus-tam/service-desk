@@ -207,8 +207,6 @@ exports.postProblemDescription = async (req, res) => {
 
       await mailSender(worker);
 
-
-
       await res.redirect('/');
   }  catch (e) {
       res.render('error', {
@@ -237,17 +235,18 @@ exports.getTaskDetails = async (req, res) => {
 
         const normalTimeFormatCreatedAt = timeWorker(task.createdAt);
         task.createdAt = normalTimeFormatCreatedAt;
-        const normalTimeFormatAcceptedAt = timeWorker(task.acceptedAt);
-        task.acceptedAt = normalTimeFormatAcceptedAt;
-
+        if (task.acceptedAt == 0) {
+            task.acceptedAt = '-';
+        } else {
+            const normalTimeFormatAcceptedAt = timeWorker(task.acceptedAt);
+            task.acceptedAt = normalTimeFormatAcceptedAt;
+        }
+        
         const tasks = await Task.find({ $and: [{ problemSolverId: req.user._id.toString() }, { isSolved: false }]}).lean();
         tasks.forEach(task => {
            task.status === 'В процессе решения' ? counter++ : null;
         });
         counter >= 1 ? isTwoProcessedTasks = true : isTwoProcessedTasks = false;
-        console.log(tasks);
-        console.log(counter);
-        console.log(isTwoProcessedTasks);
 
         res.render('serviceDesk/taskDetails', {
             docTitle: 'Детали задачи',
@@ -292,19 +291,23 @@ exports.postSetAcceptedTime = async (req, res) => {
     };
 };
 
-exports.postSetSolvedTime = async (req, res) => {
+exports.postSetSolvedTime = async (req, res, next) => {
     try {
         const taskId = req.params.taskId.replace(':', '');
         const task = await Task.findOne({ _id: taskId });
         task.solvedAt = new Date().getTime();
         task.isSolved = true;
         task.status = 'Задача решена';
+
         await task.save();
+
         req.user.isBusy = false;
         req.user.solvedProblemsNumber++;
+
         await req.user.save();
 
-        await res.redirect('/profile');
+        await next();
+
     } catch (e) {
         res.render('error', {
             docTitle: 'Ошибка',

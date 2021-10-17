@@ -24,7 +24,6 @@ const mailSender = async (worker) => {
     } catch (e) {
         console.log(e);
     }
-
 };
 
 module.exports = mailSender;

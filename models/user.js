@@ -78,6 +78,10 @@ const userSchema = new mongoose.Schema({
       required: true,
       default: 0
     },
+    averageSolutionTime: {
+      type: Number,
+      default: 0
+    },
     tokens: [{
         token: {
             type: String,
