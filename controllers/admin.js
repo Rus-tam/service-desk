@@ -1,6 +1,4 @@
 const User = require('../models/user');
-const Task = require('../models/tasks');
-const workerFinder = require("../utils/workerFinder");
 const findProblemSolver = require('../utils/findNewProblemSolver');
 
 exports.getNewUserPage = (req, res, next) => {
