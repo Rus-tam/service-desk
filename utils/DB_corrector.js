@@ -1,4 +1,5 @@
 const Task = require('../models/tasks');
+const User = require('../models/user');
 
 const dbCorrector = async () => {
     const tasks = await Task.find().lean();
@@ -7,7 +8,7 @@ const dbCorrector = async () => {
 
     let oldTasks;
 
-    if (today === 17) {
+    if (today === 18) {
         oldTasks = tasks.filter(task => {
             if ((date - task.createdAt) >= 1814000000) {
                 return task;
