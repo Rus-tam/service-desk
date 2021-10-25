@@ -1,32 +1,57 @@
-const express = require('express');
-const auth = require('../middleware/auth');
-const averageTimeCounter = require('../middleware/averageTimeCounter');
+const express = require("express");
+const auth = require("../middleware/auth");
+const averageTimeCounter = require("../middleware/averageTimeCounter");
 const router = express.Router();
 
-const serviceDeskController = require('../controllers/serviceDesk');
+const serviceDeskController = require("../controllers/serviceDesk");
 
-router.get('/', auth, serviceDeskController.getIndexPage);
+router.get("/", auth, serviceDeskController.getIndexPage);
 
-router.get('/about', serviceDeskController.getAboutPage);
+router.get("/about", serviceDeskController.getAboutPage);
 
-router.get('/profile', auth, serviceDeskController.getProfile);
+router.get("/profile", auth, serviceDeskController.getProfile);
 
-router.get('/service-catalog', auth, serviceDeskController.getServiceCatalog);
+router.get("/service-catalog", auth, serviceDeskController.getServiceCatalog);
 
-router.get('/software-problems', auth, serviceDeskController.getProblemDescriptionSoftware);
+router.get(
+  "/software-problems",
+  auth,
+  serviceDeskController.getProblemDescriptionSoftware
+);
 
-router.get('/office-equipment-problems', auth, serviceDeskController.getProblemDescriptionOfficeEquipment);
+router.get(
+  "/office-equipment-problems",
+  auth,
+  serviceDeskController.getProblemDescriptionOfficeEquipment
+);
 
-router.get('/furniture-problems', auth, serviceDeskController.getProblemDescriptionFurniture);
+router.get(
+  "/furniture-problems",
+  auth,
+  serviceDeskController.getProblemDescriptionFurniture
+);
 
-router.get('/profile-problems', auth, serviceDeskController.getProblemDescriptionAdmin);
+router.get(
+  "/profile-problems",
+  auth,
+  serviceDeskController.getProblemDescriptionAdmin
+);
 
-router.post('/new-problem', auth, serviceDeskController.postProblemDescription);
+router.post("/new-problem", auth, serviceDeskController.postProblemDescription);
 
-router.get('/task-details/:taskId', auth, serviceDeskController.getTaskDetails);
+router.get("/task-details/:taskId", auth, serviceDeskController.getTaskDetails);
 
-router.post('/set-accepted-time/:taskId', auth, serviceDeskController.postSetAcceptedTime);
+router.post(
+  "/set-accepted-time/:taskId",
+  auth,
+  serviceDeskController.postSetAcceptedTime
+);
 
-router.post('/set-solved-time/:taskId', auth, serviceDeskController.postSetSolvedTime, averageTimeCounter);
+router.post(
+  "/set-solved-time/:taskId",
+  auth,
+  serviceDeskController.postSetSolvedTime,
+  averageTimeCounter
+);
 
 module.exports = router;
