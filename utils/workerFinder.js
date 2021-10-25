@@ -1,6 +1,6 @@
 const User = require('../models/user');
-const Task = require('../models/tasks');
 
+//Поиск работника для выполнения новой задачи
 const workerFinder = async (destination) => {
     const workers = await User.find({ role: destination });
     const freeWorkers = workers.filter( worker => worker.isBusy === false);

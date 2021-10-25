@@ -1,7 +1,7 @@
 const Task = require('../models/tasks');
-const User = require('../models/user');
 const workerFinder = require('../utils/workerFinder');
 
+//Поиск работника для выполнения задачи, если аккаунт предыдущего работника был удален
 const findProblemSolver = async (userId) => {
     let worker;
     const deletedUserTasks = await Task.find({ problemSolverId: userId }).lean();

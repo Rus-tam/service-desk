@@ -1,8 +1,8 @@
 const Task = require('../models/tasks');
-const User = require('../models/user');
 
+//Каждый месяц 18 числа удаляет выполненные задачи из базы данных
 const dbCorrector = async () => {
-    const tasks = await Task.find().lean();
+    const tasks = await Task.find({ isSolved: true }).lean();
     const date = new Date().getTime();
     const today = new Date(date).getDate();
 

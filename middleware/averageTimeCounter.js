@@ -1,6 +1,7 @@
 const Task = require('../models/tasks');
 
-const averageTimeCounter = async (req, res, next) => {
+//Производит расчет среднего времени выполнения задачи
+const averageTimeCounter = async (req, res) => {
     let averageTime = 0;
     const task = await Task.find({ $and: [{ problemSolverId: req.user._id.toString() }, { isSolved: true }] }).lean();
     const passedTime = await (task[task.length - 1].solvedAt - task[task.length - 1].acceptedAt);

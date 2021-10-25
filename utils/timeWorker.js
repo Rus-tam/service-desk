@@ -1,3 +1,4 @@
+//Формирует строку с нормальным отображением времени
 const createNormalTime = (msDate) => {
     const milliseconds = new Date(msDate);
     let hour = milliseconds.getHours().toString();

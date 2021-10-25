@@ -1,5 +1,3 @@
-const Task = require('../models/tasks');
-const User = require('../models/user');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 
