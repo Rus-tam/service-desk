@@ -7,7 +7,8 @@ const dbCorrector = require('../utils/DB_corrector');
 exports.getIndexPage = async (req, res, next) => {
     try {
         let isTaskPresent;
-        let tasks = await Task.find({ problemMakerId: req.user._id }).lean();
+        let tasks = await Task.find({ $and: [{ problemSolverId: req.user._id }, { isSolved: false }]}).lean();
+
         tasks.length === 0 ? isTaskPresent = false : isTaskPresent = true;
 
         tasks.forEach((task) => {
