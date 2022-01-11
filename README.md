@@ -32,4 +32,4 @@ $ npm run dev
 
 ## Авторы
 
-- Авторы - [Ахметов Рустам](ahmetov.rustam2011@gmail.com),
+- Авторы - [Ахметов Рустам](ahmetov.rustam2011@gmail.com).
