@@ -6,6 +6,8 @@ const dbCorrector = async () => {
   const date = new Date().getTime();
   const today = new Date(date).getDate();
 
+  console.log(today);
+
   let oldTasks;
 
   if (today === 18) {
